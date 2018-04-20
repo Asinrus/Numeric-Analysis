@@ -9,63 +9,70 @@ from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QFont
 
 class NewtoneMethod:
+    a=1
     A = -pi/2
     B = 0 
     x0 = A
-    def f(self,x):
-        return sin(x)-2*x*x + 0.5
+    def f_1(self,x1,x2):
+        return x1-cos(x2)-self.a
 
-    def df(self,x):
-        return cos(x)-4*x
+    def f_2(self,x1,x2):
+        return x2-sin(x1)-self.a
+    
+    def det_J(self,x1,x2):
+        return 1+sin(x2)*cos(x1)
 
-    def ddf(self,x):
-        return -sin(x)
+    def A_1(self,x1,x2):
+        return self.f_1(x1,x2) - self.f_2(x1,x2) * sin(x2)
+
+    def A_2(self,x1,x2):
+        return self.f_2(x1,x2) + self.f_1(x1,x2) * cos(x1)
+
+    
     
     def solver(self,eps):
-        x_k = self.x0 - self.f(self.x0)/self.df(self.x0)
-        x = self.x0
-        it = 1
-        self.self = self
-        while(abs(x_k-x)>eps):
-            x = x_k
-            try:
-                x_k = x - self.f(x)/self.df(x)
-            except ZeroDivisionError:
-                x_k = x - 0.00001
-            if x_k >= self.B:
-                return "Newtone \n Answer don't find \n"
+        x = [0,0]
+        x_k = [0,0]
+        it = 0
+        while True:
+            x_k[0] = x[0] - self.A_1(x[0],x[1]) / self.det_J(x[0],x[1])
+            x_k[1] = x[1] - self.A_2(x[0],x[1]) / self.det_J(x[0],x[1])
             it += 1
-        return "Newton \n Answer %.4f \n Iteration %d \n Eps %.7f,\n Function:  %.7f\n"\
-         %(x_k, it,abs(x_k-x),self.f(x_k))
+            if max( abs(x_k[0]-x[0]) ,abs(x_k[1]-x[1]) ) < eps or it >100:
+                break 
+            x[:] = [i for i in x_k]
+
+        s = "Newton \n Answer \n x1 =  %.4f \n x2 = %.4f \n Iteration %d \n Eps %.9f,\n f1(x1,x2) = %.4f \n f2(x1,x2) = %.4f \n"\
+         %(x_k[0],x_k[1], it, max( abs(x_k[0]-x[0]) ,abs(x_k[1]-x[1])), self.f_1(x_k[0],x_k[1]),self.f_2(x_k[0],x_k[1]))  
+        return s
 
 
 class Iteration(NewtoneMethod) :
-    A = -pi/2
-    B = 0
-    x0 = A
-    lam = 1/(2*pi+1)
 
-    def phi(self,x):
-        return x - self.lam*self.f(x)
+
+    def phi_1(self,x):
+        return cos(x) + self.a
+    
+    def phi_2(self,x):
+        return sin(x) + self.a
     
     def solver(self,eps):
-        if self.f(self.A) > 0 and  self.f(self.B) > 0 or self.f(self.A) < 0 and  self.f(self.B) < 0:
-            print('Значения функций имеют один знак на указаных границах')
-            exit(False)
-        q = 1-2*pi*self.lam
-        #q = 0.3
+        q = 0.2
         eps_q = abs(q/(1-q))
         print(eps_q)
         it = 0
-        x = self.x0
-        x_k = self.phi(x)
-        while eps_q*abs(x_k - x) >eps and it<100:
-           x = x_k
-           x_k = self.phi(x)
-           it += 1
-
-        return "Simple Iteration \n Answer %.4f \n Iteration %d \n Eps %.7f,\n Function: %.7f\n"\
-         %(x_k, it,abs(eps_q*abs(x_k-x)),self.f(x_k))
+        x = [0,0]
+        x_k = [0,0]
+        while True:
+            x_k[0] = self.phi_1(x[1])
+            x_k[1] = self.phi_2(x[0])
+            it += 1
+            if eps_q* max( abs(x_k[0]-x[0]) ,abs(x_k[1]-x[1]) ) < eps or it >100:
+               break
+            x[:] = [i for i in x_k]
+        s = "Simple \n Answer \n x1 =  %.4f \n x2 = %.4f \n Iteration %d \n Eps %.9f,\n f1(x1,x2) = %.4f \n f2(x1,x2) = %.4f \n"\
+         %(x_k[0],x_k[1], it, eps_q*max( abs(x_k[0]-x[0]) ,abs(x_k[1]-x[1])), self.f_1(x_k[0],x_k[1]),self.f_2(x_k[0],x_k[1]))  
+        return s
             
         
     
