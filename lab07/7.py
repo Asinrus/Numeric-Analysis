@@ -8,10 +8,13 @@ QDoubleSpinBox)
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QFont
 
+
+'''Решение системы нелинейыъ уравнений методом Ньютона . 
+Проблема в методе простой итерации не смог подобрать коэффициент '''
 class NewtoneMethod:
     a=1
-    A = -pi/2
-    B = 0 
+    A = 0
+    B = pi/2 
     x0 = A
     def f_1(self,x1,x2):
         return x1-cos(x2)-self.a
@@ -57,7 +60,7 @@ class Iteration(NewtoneMethod) :
         return sin(x) + self.a
     
     def solver(self,eps):
-        q = 0.2
+        q = 0.5
         eps_q = abs(q/(1-q))
         print(eps_q)
         it = 0
@@ -120,7 +123,7 @@ class Window(QWidget):
 
         self.setGeometry(300,300,300,200)
         self.setLayout(layout)
-        self.setWindowTitle("Lab06")
+        self.setWindowTitle("Lab07")
         self.show()
         
 

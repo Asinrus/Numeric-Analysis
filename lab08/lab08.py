@@ -1,6 +1,9 @@
+# -*- encoding: utf-8 -*-
 import sys
 import numpy as np
 from math import sin, pi,cos,sqrt,asin,atan,log
+
+#'''uРяды Лангранжа и Ньютона'''
 
 def f(x):
     return atan(x)
@@ -73,9 +76,9 @@ if __name__ == '__main__':
     X = -0.5
     X_lan = [-3,-1,1,3]
     X_new = [-3, 0, 1, 3]
-    print('Ряд Лангранжа :\n', lan(X_lan))
-    print('Значение ряда Лангранжа в точке {}  = {}'.format(X,lan(X_lan,X)))
-    print("Неточность  = {}".format(abs(lan(X_lan,X)-f(X))))
-    print('Ряд Ньютона :\n', new(X_new))
-    print('Значение ряда Ньютона в точке {}  = {}'.format(X,new(X_new,X) ) )
-    print("Неточность  = {}".format(abs(new(X_new,X)-f(X))))
+    print(u'Ряд Лангранжа :\n', lan(X_lan))
+    print(u'Значение ряда Лангранжа в точке {}  = {}'.format(X,lan(X_lan,X)))
+    print(u"Неточность  = {}".format(abs(lan(X_lan,X)-f(X))))
+    print(u'Ряд Ньютона :\n', new(X_new))
+    print(u'Значение ряда Ньютона в точке {}  = {}'.format(X,new(X_new,X) ) )
+    print(u"Неточность  = {}".format(abs(new(X_new,X)-f(X))))

@@ -20,6 +20,7 @@ def solver(A,n,EPS):
         k+=1
         
     l = np.diag(A)
+    
     output.insert("0.0","\n end")
     output.insert("0.0",sqrt( sum_non_diag(A) ) )
     output.insert("0.0","\n погрешность= ")
@@ -66,7 +67,7 @@ def handler():
         output.insert("0.0","Make sure you entered all values\n")
         
 def load():
-    file = open('file1.txt','r')
+    file = open('file.txt','r')
     k=0
     eps.delete(0,END)
     eps.insert(0,float(file.readline()))

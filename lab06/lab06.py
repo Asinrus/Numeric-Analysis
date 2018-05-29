@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import sys
 import numpy as np
 from math import sin, pi,cos,sqrt,asin
@@ -8,10 +9,12 @@ QDoubleSpinBox)
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QFont
 
+u'''Решение нелинейного уравнения методом Ньютона . Проблема в методе простой итерации не смог подобрать коэффициент  
+Исправить положительный корень. '''
 class NewtoneMethod:
-    A = -pi/2
-    B = 0 
-    x0 = A
+    A = 0.01
+    B = pi/2 
+    x0 = B
     def f(self,x):
         return sin(x)-2*x*x + 0.5
 
@@ -40,20 +43,18 @@ class NewtoneMethod:
 
 
 class Iteration(NewtoneMethod) :
-    A = -pi/2
-    B = 0
+    A = 0
+    B = pi/3 
     x0 = A
-    lam = 1/(2*pi+1)
 
     def phi(self,x):
-        return x - self.lam*self.f(x)
+        return sqrt(0.5*(sin(x)+0.5) )
     
     def solver(self,eps):
         if self.f(self.A) > 0 and  self.f(self.B) > 0 or self.f(self.A) < 0 and  self.f(self.B) < 0:
-            print('Значения функций имеют один знак на указаных границах')
+            print('The results of function have one sign on right and left border ')
             exit(False)
-        q = 1-2*pi*self.lam
-        #q = 0.3
+        q = 0.826
         eps_q = abs(q/(1-q))
         print(eps_q)
         it = 0

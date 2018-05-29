@@ -80,7 +80,7 @@ def handler():
         output.insert("0.0","Make sure you entered all values\n")
         
 def load():
-    file = open('file.txt','r')
+    file = open('file1.txt','r')
     k=0
     eps.delete(0,END)
     eps.insert(0,float(file.readline()))
